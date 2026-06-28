@@ -126,53 +126,56 @@ export default class AdminDashboard extends HTMLElement {
     this.$combosGrid.appendChild(card);
   }
 
-  openCreateModal() {
-    const form = this.createPlatoForm();
+  async openCreateModal() {
+    const form = await this.createPlatoForm();
     slice.events.emit('modal:open', {
       title: 'Nuevo Plato',
       content: form,
     });
   }
 
-  openEditModal(plato) {
-    const form = this.createPlatoForm(plato);
+  async openEditModal(plato) {
+    const form = await this.createPlatoForm(plato);
     slice.events.emit('modal:open', {
       title: 'Editar Plato',
       content: form,
     });
   }
 
-  createPlatoForm(plato) {
-    const container = document.createElement('div');
-    container.innerHTML = `
-      <form class="admin__form">
-        <label class="block mb-3">
-          <span class="text-sm font-medium">Nombre</span>
-          <input type="text" id="field-nombre" value="${plato?.nombre || ''}" required class="w-full px-3 py-2 rounded border mt-1" />
-        </label>
-        <label class="block mb-3">
-          <span class="text-sm font-medium">Descripción</span>
-          <textarea id="field-descripcion" required class="w-full px-3 py-2 rounded border mt-1">${plato?.descripcion || ''}</textarea>
-        </label>
-        <label class="block mb-3">
-          <span class="text-sm font-medium">Categoría</span>
-          <select id="field-categoria" class="w-full px-3 py-2 rounded border mt-1"></select>
-        </label>
-        <label class="block mb-3">
-          <span class="text-sm font-medium">Precio Base ($)</span>
-          <input type="number" id="field-precio" step="0.01" value="${plato?.precioBase || ''}" required class="w-full px-3 py-2 rounded border mt-1" />
-        </label>
-        <label class="block mb-3">
-          <span class="text-sm font-medium">URL de Imagen</span>
-          <input type="url" id="field-imagen" value="${plato?.imageUrl || ''}" placeholder="https://ejemplo.com/imagen.jpg" class="w-full px-3 py-2 rounded border mt-1" />
-        </label>
-        <button type="submit" class="w-full py-2 rounded text-white font-medium" style="background:var(--primary-color)">
-          ${plato ? 'Guardar Cambios' : 'Crear Plato'}
-        </button>
-      </form>
-    `;
+  async createPlatoForm(plato) {
+    const form = document.createElement('form');
+    form.className = 'admin__form';
+
+    const nombreInput = await slice.build('Input', {
+      label: 'Nombre',
+      value: plato?.nombre || '',
+      required: true,
+    });
+
+    const descContainer = document.createElement('label');
+    descContainer.className = 'block mb-3';
+    const descLabel = document.createElement('span');
+    descLabel.className = 'text-sm font-medium';
+    descLabel.textContent = 'Descripción';
+    const textarea = document.createElement('textarea');
+    textarea.id = 'field-descripcion';
+    textarea.required = true;
+    textarea.className = 'w-full px-3 py-2 rounded border mt-1';
+    textarea.style.cssText = 'width:100%;padding:8px 12px;border-radius:8px;border:1px solid var(--input-border);background:var(--input-background);color:var(--font-primary-color);font-family:inherit;resize:vertical;min-height:80px;margin-top:4px';
+    textarea.value = plato?.descripcion || '';
+    descContainer.appendChild(descLabel);
+    descContainer.appendChild(textarea);
+
+    const catContainer = document.createElement('label');
+    catContainer.className = 'block mb-3';
+    const catLabel = document.createElement('span');
+    catLabel.className = 'text-sm font-medium';
+    catLabel.textContent = 'Categoría';
+    const select = document.createElement('select');
+    select.id = 'field-categoria';
+    select.className = 'w-full px-3 py-2 rounded border mt-1';
+    select.style.cssText = 'width:100%;padding:8px 12px;border-radius:8px;border:1px solid var(--input-border);background:var(--input-background);color:var(--font-primary-color);font-family:inherit;margin-top:4px';
     const state = slice.context.getState('restaurantContext');
-    const select = container.querySelector('#field-categoria');
     (state?.categorias || []).forEach(cat => {
       const opt = document.createElement('option');
       opt.value = cat.id;
@@ -180,15 +183,44 @@ export default class AdminDashboard extends HTMLElement {
       if (plato && plato.categoriaId === cat.id) opt.selected = true;
       select.appendChild(opt);
     });
+    catContainer.appendChild(catLabel);
+    catContainer.appendChild(select);
 
-    container.querySelector('form').addEventListener('submit', (event) => {
+    const precioInput = await slice.build('Input', {
+      label: 'Precio Base ($)',
+      type: 'number',
+      value: plato?.precioBase?.toString() || '',
+      required: true,
+    });
+
+    const imagenInput = await slice.build('Input', {
+      label: 'URL de Imagen',
+      type: 'url',
+      value: plato?.imageUrl || '',
+      placeholder: 'https://ejemplo.com/imagen.jpg',
+    });
+
+    const submitBtn = document.createElement('button');
+    submitBtn.type = 'submit';
+    submitBtn.className = 'w-full py-2 rounded text-white font-medium';
+    submitBtn.style.cssText = 'width:100%;padding:10px;border-radius:8px;border:none;background:var(--primary-color);color:var(--primary-color-contrast);font-size:1rem;cursor:pointer;margin-top:8px';
+    submitBtn.textContent = plato ? 'Guardar Cambios' : 'Crear Plato';
+
+    form.appendChild(nombreInput);
+    form.appendChild(descContainer);
+    form.appendChild(catContainer);
+    form.appendChild(precioInput);
+    form.appendChild(imagenInput);
+    form.appendChild(submitBtn);
+
+    form.addEventListener('submit', (event) => {
       event.preventDefault();
       const data = {
-        nombre: container.querySelector('#field-nombre').value,
-        descripcion: container.querySelector('#field-descripcion').value,
-        categoriaId: container.querySelector('#field-categoria').value,
-        precioBase: parseFloat(container.querySelector('#field-precio').value),
-        imageUrl: container.querySelector('#field-imagen').value,
+        nombre: nombreInput.value,
+        descripcion: textarea.value,
+        categoriaId: select.value,
+        precioBase: parseFloat(precioInput.value),
+        imageUrl: imagenInput.value,
       };
       const store = this.getStore();
       if (plato) {
@@ -199,62 +231,88 @@ export default class AdminDashboard extends HTMLElement {
       slice.events.emit('modal:close');
     });
 
-    return container;
+    return form;
   }
 
-  openCreateComboModal() {
-    const form = this.createComboForm();
+  async openCreateComboModal() {
+    const form = await this.createComboForm();
     slice.events.emit('modal:open', {
       title: 'Nuevo Combo',
       content: form,
     });
   }
 
-  createComboForm() {
-    const container = document.createElement('div');
-    container.innerHTML = `
-      <form class="admin__form">
-        <label>
-          <span>Nombre del Combo</span>
-          <input type="text" id="combo-nombre" required placeholder="Ej: Combo Familiar" />
-        </label>
-        <label>
-          <span>Descripción</span>
-          <textarea id="combo-descripcion" placeholder="Describe el combo"></textarea>
-        </label>
-        <label>
-          <span>Precio Total ($)</span>
-          <input type="number" id="combo-precio" step="0.01" required placeholder="0.00" />
-        </label>
-        <label>
-          <span>Platos incluidos</span>
-          <div id="combo-platos"></div>
-        </label>
-        <button type="submit" style="width:100%;padding:10px;background:var(--primary-color);color:var(--primary-color-contrast);border:none;border-radius:var(--border-radius-slice);font-size:1rem;cursor:pointer">
-          Crear Combo
-        </button>
-      </form>
-    `;
+  async createComboForm() {
+    const form = document.createElement('form');
+    form.className = 'admin__form';
+
+    const nombreInput = await slice.build('Input', {
+      label: 'Nombre del Combo',
+      value: '',
+      placeholder: 'Ej: Combo Familiar',
+      required: true,
+    });
+
+    const descContainer = document.createElement('label');
+    descContainer.style.cssText = 'display:block;margin-bottom:12px';
+    const descLabel = document.createElement('span');
+    descLabel.className = 'text-sm font-medium';
+    descLabel.textContent = 'Descripción';
+    const textarea = document.createElement('textarea');
+    textarea.id = 'combo-descripcion';
+    textarea.placeholder = 'Describe el combo';
+    textarea.style.cssText = 'width:100%;padding:8px 12px;border-radius:8px;border:1px solid var(--input-border);background:var(--input-background);color:var(--font-primary-color);font-family:inherit;resize:vertical;min-height:80px;margin-top:4px';
+    descContainer.appendChild(descLabel);
+    descContainer.appendChild(textarea);
+
+    const precioInput = await slice.build('Input', {
+      label: 'Precio Total ($)',
+      type: 'number',
+      value: '',
+      placeholder: '0.00',
+      required: true,
+    });
+
+    const platosLabel = document.createElement('span');
+    platosLabel.className = 'text-sm font-medium';
+    platosLabel.textContent = 'Platos incluidos';
+    const platosContainer = document.createElement('div');
+    platosContainer.id = 'combo-platos';
 
     const state = slice.context.getState('restaurantContext');
     const platos = state?.platos || [];
-    const platosContainer = container.querySelector('#combo-platos');
     platos.forEach(plato => {
       const label = document.createElement('label');
       label.style.cssText = 'display:flex;align-items:center;gap:8px;margin:4px 0;font-weight:normal';
-      label.innerHTML = `
-        <input type="checkbox" class="combo-plato-check" value="${plato.id}" />
-        <span>${plato.nombre} - $${plato.precioBase.toFixed(2)}</span>
-      `;
+      const checkbox = document.createElement('input');
+      checkbox.type = 'checkbox';
+      checkbox.className = 'combo-plato-check';
+      checkbox.value = plato.id;
+      const nameSpan = document.createElement('span');
+      nameSpan.textContent = `${plato.nombre} - $${plato.precioBase.toFixed(2)}`;
+      label.appendChild(checkbox);
+      label.appendChild(nameSpan);
       platosContainer.appendChild(label);
     });
 
-    container.querySelector('form').addEventListener('submit', async (event) => {
+    const submitBtn = document.createElement('button');
+    submitBtn.type = 'submit';
+    submitBtn.style.cssText = 'width:100%;padding:10px;background:var(--primary-color);color:var(--primary-color-contrast);border:none;border-radius:var(--border-radius-slice);font-size:1rem;cursor:pointer';
+    submitBtn.textContent = 'Crear Combo';
+
+    form.appendChild(nombreInput);
+    form.appendChild(descContainer);
+    form.appendChild(precioInput);
+    form.appendChild(platosLabel);
+    form.appendChild(platosContainer);
+    form.appendChild(submitBtn);
+
+    form.addEventListener('submit', async (event) => {
       event.preventDefault();
-      const nombre = container.querySelector('#combo-nombre').value;
-      const descripcion = container.querySelector('#combo-descripcion').value;
-      const totalPrice = parseFloat(container.querySelector('#combo-precio').value);
-      const selectedPlatos = [...container.querySelectorAll('.combo-plato-check:checked')].map(cb => ({
+      const nombre = nombreInput.value;
+      const descripcion = textarea.value;
+      const totalPrice = parseFloat(precioInput.value);
+      const selectedPlatos = [...form.querySelectorAll('.combo-plato-check:checked')].map(cb => ({
         dish_id: parseInt(cb.value),
         quantity: 1
       }));
@@ -268,7 +326,7 @@ export default class AdminDashboard extends HTMLElement {
       slice.events.emit('modal:close');
     });
 
-    return container;
+    return form;
   }
 }
 
