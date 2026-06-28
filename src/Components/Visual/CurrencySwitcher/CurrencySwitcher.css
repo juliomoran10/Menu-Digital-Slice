@@ -1,0 +1,9 @@
+.currency-switcher__select {
+  padding: 6px 12px;
+  border-radius: var(--border-radius-slice);
+  border: 1px solid var(--input-border);
+  background: var(--input-background);
+  color: var(--font-primary-color);
+  font-size: 0.9rem;
+  cursor: pointer;
+}

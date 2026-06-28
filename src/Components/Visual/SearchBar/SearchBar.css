@@ -1,0 +1,12 @@
+.search-bar__input {
+  width: 100%;
+  padding: 10px 16px;
+  border-radius: var(--border-radius-slice);
+  border: 1px solid var(--input-border);
+  background: var(--input-background);
+  color: var(--font-primary-color);
+  font-size: 1rem;
+}
+.search-bar__input::placeholder {
+  color: var(--medium-color);
+}

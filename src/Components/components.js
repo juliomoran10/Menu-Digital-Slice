@@ -1,0 +1,30 @@
+const components = {
+  "AppShell": "AppComponents",
+  "AdminDashboard": "AppComponents",
+  "PublicMenu": "AppComponents",
+  "FinancialSimulator": "AppComponents",
+  "Button": "Visual",
+  "Link": "Visual",
+  "Loading": "Visual",
+  "MultiRoute": "Visual",
+  "Navbar": "Visual",
+  "NotFound": "Visual",
+  "Route": "Visual",
+  "AppModal": "Visual",
+  "ThemeToggle": "Visual",
+  "CurrencySwitcher": "Visual",
+  "SearchBar": "Visual",
+  "CategoryCarousel": "Visual",
+  "PlatoCard": "Visual",
+  "ComboCard": "Visual",
+  "Sidebar": "Visual",
+  "CartDrawer": "Visual",
+  "FetchManager": "Service",
+  "RestaurantStore": "Service",
+  "ExchangeService": "Service",
+  "ApiService": "Service",
+  "CartService": "Service",
+  "LocalStorageManager": "Service"
+};
+
+export default components;

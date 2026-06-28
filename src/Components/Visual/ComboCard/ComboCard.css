@@ -1,0 +1,60 @@
+.combo-card {
+  background: var(--card-background, var(--primary-background-color));
+  border: 2px solid var(--secondary-color);
+  border-radius: 12px;
+  padding: 16px;
+  position: relative;
+}
+.combo-card__badge {
+  position: absolute;
+  top: -8px;
+  right: 12px;
+  background: var(--secondary-color);
+  color: var(--secondary-color-contrast);
+  font-size: 0.7rem;
+  font-weight: bold;
+  padding: 2px 10px;
+  border-radius: 10px;
+  text-transform: uppercase;
+}
+.combo-card__name {
+  margin: 0 0 4px;
+  color: var(--font-primary-color);
+}
+.combo-card__desc {
+  font-size: 0.85rem;
+  color: var(--font-secondary-color);
+  margin: 4px 0 8px;
+}
+.combo-card__items {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 12px;
+}
+.combo-card__item {
+  font-size: 0.8rem;
+  color: var(--font-secondary-color);
+  padding: 2px 0;
+}
+.combo-card__footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.combo-card__price {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--primary-color);
+}
+.combo-card__btn {
+  background: var(--primary-color);
+  color: var(--primary-color-contrast);
+  border: none;
+  border-radius: 8px;
+  padding: 8px 20px;
+  cursor: pointer;
+  font-weight: 500;
+}
+.combo-card__btn:hover {
+  background: var(--primary-color-shade);
+}

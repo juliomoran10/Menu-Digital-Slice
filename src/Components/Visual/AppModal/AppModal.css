@@ -1,0 +1,58 @@
+slice-app-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  align-items: center;
+  justify-content: center;
+}
+slice-app-modal.modal--open {
+  display: flex;
+}
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.modal-content {
+  background: var(--card-background, var(--primary-background-color));
+  border-radius: 12px;
+  padding: 24px;
+  min-width: 320px;
+  max-width: 500px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+  position: relative;
+  z-index: 10000;
+}
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+.modal-title {
+  margin: 0;
+  color: var(--font-primary-color);
+  font-size: 1.25rem;
+}
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--font-secondary-color);
+  padding: 4px 8px;
+  line-height: 1;
+}
+.modal-close:hover {
+  color: var(--font-primary-color);
+}
+.modal-body {
+  color: var(--font-primary-color);
+}

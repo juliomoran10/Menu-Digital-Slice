@@ -1,0 +1,30 @@
+.carousel__container {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 8px 0;
+  scrollbar-width: none;
+}
+.carousel__container::-webkit-scrollbar {
+  display: none;
+}
+.carousel__btn {
+  flex-shrink: 0;
+  padding: 8px 20px;
+  border-radius: 20px;
+  border: 1px solid var(--card-border);
+  background: var(--card-background);
+  color: var(--font-primary-color);
+  cursor: pointer;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+.carousel__btn:hover {
+  background: var(--secondary-background-color);
+}
+.carousel__btn--active {
+  background: var(--primary-color);
+  color: var(--primary-color-contrast);
+  border-color: var(--primary-color);
+}

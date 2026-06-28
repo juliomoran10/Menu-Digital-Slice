@@ -1,0 +1,139 @@
+.admin {
+  padding: 24px 0;
+}
+.admin__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+.admin__header-btns {
+  display: flex;
+  gap: 8px;
+}
+.admin__restaurante-name {
+  margin: 0;
+  font-size: 1.8rem;
+  color: var(--font-primary-color);
+}
+.admin__btn-add {
+  padding: 10px 20px;
+  background: var(--primary-color);
+  color: var(--primary-color-contrast);
+  border: none;
+  border-radius: var(--border-radius-slice);
+  font-size: 1rem;
+  cursor: pointer;
+}
+.admin__btn-add:hover, .admin__btn-add-combo:hover {
+  background: var(--primary-color-shade);
+}
+.admin__btn-add-combo {
+  padding: 10px 20px;
+  background: var(--secondary-color, #6c757d);
+  color: var(--primary-color-contrast);
+  border: none;
+  border-radius: var(--border-radius-slice);
+  font-size: 1rem;
+  cursor: pointer;
+}
+.admin__section {
+  margin-bottom: 32px;
+}
+.admin__section-title {
+  color: var(--font-primary-color);
+  font-size: 1.2rem;
+  margin: 0 0 16px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--primary-color);
+}
+.admin__combos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+.admin__stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.admin__stat-card {
+  background: var(--card-background);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  padding: 16px;
+  text-align: center;
+}
+.admin__stat-label {
+  display: block;
+  color: var(--font-secondary-color);
+  font-size: 0.85rem;
+  margin-bottom: 4px;
+}
+.admin__stat-card span:last-child {
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--primary-color);
+}
+.admin__platos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+.admin__btn-toggle {
+  padding: 4px 12px;
+  border-radius: var(--border-radius-slice);
+  border: 1px solid var(--card-border);
+  background: var(--card-background);
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+.admin__btn-edit {
+  padding: 4px 12px;
+  border-radius: var(--border-radius-slice);
+  border: 1px solid var(--secondary-color);
+  background: var(--secondary-background-color);
+  color: var(--font-primary-color);
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+.admin__btn-delete {
+  padding: 4px 12px;
+  border-radius: var(--border-radius-slice);
+  border: 1px solid var(--danger-color);
+  background: transparent;
+  color: var(--danger-color);
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+.admin__form label {
+  display: block;
+  margin-bottom: 12px;
+  color: var(--font-primary-color);
+}
+.admin__form input,
+.admin__form textarea,
+.admin__form select {
+  width: 100%;
+  padding: 8px;
+  margin-top: 4px;
+  border-radius: var(--border-radius-slice);
+  border: 1px solid var(--input-border);
+  background: var(--input-background);
+  color: var(--font-primary-color);
+}
+.admin__form textarea {
+  min-height: 60px;
+  resize: vertical;
+}
+.admin__form button[type="submit"] {
+  width: 100%;
+  padding: 10px;
+  background: var(--primary-color);
+  color: var(--primary-color-contrast);
+  border: none;
+  border-radius: var(--border-radius-slice);
+  font-size: 1rem;
+  cursor: pointer;
+}
