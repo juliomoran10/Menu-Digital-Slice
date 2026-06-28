@@ -2,6 +2,7 @@
   "version": 2,
   "buildCommand": "npm run build",
   "installCommand": "pnpm install",
+  "outputDirectory": "dist",
   "routes": [
     { "src": "/(.*)", "dest": "/api/index.js" }
   ],
