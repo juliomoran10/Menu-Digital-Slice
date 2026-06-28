@@ -294,7 +294,9 @@ process.on('SIGTERM', () => {
   process.exit(0);
 });
 
-// Iniciar servidor
-startServer();
+// Iniciar servidor (solo local, no Vercel)
+if (!process.env.VERCEL) {
+  startServer();
+}
 
 export default app;
